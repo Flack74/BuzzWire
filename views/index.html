@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}}</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"
+            integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
+            crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        .chat-window { max-width: 800px; margin: 50px auto; }
+        .messages { height: 400px; overflow-y: auto; border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; }
+        .input-area { display: flex; gap: 10px; }
+        .input-area input { flex: 1; }
+        .message { margin-bottom: 10px; padding: 8px; border-radius: 5px; background: #f8f9fa; }
+        .message .username { font-weight: bold; color: #007bff; }
+        .message .timestamp { font-size: 0.8em; color: #6c757d; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="chat-window" hx-ext="ws" ws-connect="/ws">
+            <div class="messages" id="messages" hx-swap-oob="beforeend">
+                <!-- Messages will be appended here -->
+            </div>
+            <form id="form" ws-send hx-on::ws-after-send="this.reset()">
+                <div class="input-area">
+                    <input type="text" name="text" id="messageInput" placeholder="Type a message..." required>
+                    <input type="text" name="username" placeholder="Your name" required>
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
